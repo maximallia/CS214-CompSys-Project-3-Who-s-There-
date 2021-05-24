@@ -1,0 +1,292 @@
+ASST3 TESTCASES
+GROUP MEMBERS:
+Treasa Jose tb678, Daniel Ying dty16
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 0.
+PLANNED INTERACTION: 
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|5|Tank.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|11|Tank, who?|", SERVER READS
+   L4.SERVER WRITES:"REG|15|You're welcome.|", CLIENT READS
+   L5.CLIENT WRITES "REG|5|Ughh!|", SERVER READS
+GOAL:
+/* This testcase checks if the program runs smoothly following 
+	the requirements of the assignment and the server remains opened */
+
+OUTPUT:
+Client-side                                SPLIT                     Server-side
+Line 0. REG|13|Knock, knock.|                │                       Line 1. REG|12|Who's there?|
+Line 2. REG|5|Tank.|                         │                       Line 3. REG|10|Tank, who?|
+Line 4. REG|15|You're welcome.|              │                       Line 5. REG|5|Ughh!|
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 1.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|14|Broken pencil.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|21|Broken pencil, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|21|Nevermind, it's pointless.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|5|Ughh!|", SERVER READS
+GOAL:
+/* This testcase checks how the program handles an invalid length in line 4. The program must 
+	gracefully display the error-code M3LN, and exit the code. */
+
+OUTPUT:                                   
+Client-side                               SPLIT                     Server-side
+Line 0. REG|13|Knock, knock.|               |                       Line 1. REG|12|Who's there?|
+Line 2. REG|14|Broken pencil.|              |                       Line 3. REG|21|Broken pencil, who?|
+        ERR|M3LN|                           |
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 2. 
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|5|Cash.|", CLIENT READS
+   L3.CLIENT WRITES: "|Cash, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|27|Nevermind, I prefer hazelnuts.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|5|Haha!|", SERVER READS
+GOAL
+/* This testcase checks how the program handles an invalid message format in line 4. The program 
+	must gracefully display the error-code M3FT due to missing REG, and exit the code. */
+
+OUTPUT:
+Client-side                                   SPLIT                  Server-side
+Line 0. REG|13|Knock, knock.|                   │                    Line 1. REG|12|Who's there?|
+Line 2. REG|5|Cash.|                            │                    Line 3. |Cash who?|
+        ERR|M3FT|                               |  
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 3. 
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Boo.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|4|Boo?|", SERVER READS
+   L4.SERVER WRITES: "REG|15|Hey, don't cry.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|5|Ahhh!|", SERVER READS
+GOAL:
+/* This testcase checks how the program handles an invalid content in line 2. The program must gracefully 
+	display the error-code M3CT, and exit the code. */
+
+OUTPUT:
+Client-side                              SPLIT          	   Server-side
+Line 0. REG|13|Knock, knock.|              |                       Line 1. REG|12|Who's there?|
+Line 2. REG|4|Boo.|                        │                       Line 3. REG|4|Boo?|
+        ERR|M3CT|                          |
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 4.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|", SERVER READS
+   L1.CLIENT WRITES: "Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|5|Tank.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|11|Tank, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|15|You're welcome.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|5|Ughh!|", SERVER READS
+GOAL:
+/* This testcase checks if the program accepts code that are split like here without displaying any 
+	errors. It should run smoothly and display the Knock Knock Joke. */
+OUTPUT:
+Client-side                                SPLIT                     Server-side
+Line 0. REG|13|Knock, knock.|                │                       Line 1. REG|12|Who's there?|
+Line 2. REG|5|Tank.|                         │                       Line 3. REG|10|Tank, who?|
+Line 4. REG|15|You're welcome.|              │                       Line 5. REG|5|Ughh!|
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 5.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|", SERVER READS
+   L1.CLIENT WRITES: "Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Bad.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|9|Bad, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|16|A very bad joke.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|22|you were unfriended...", SERVER READS
+GOAL:
+/* This testcase checks if the program accepts code that are split like here and detect a missing pipe in line 5. The program should wait for third pipe and display M5FT when client disconnects, and server remain opened. */
+OUTPUT:
+Client-side                                SPLIT                      Server-side
+Line 0. REG|13|Knock, knock.|                │                        Line 1. REG|12|Who's there?|
+Line 2. REG|4|Bad.|                          │                        Line 3. REG|9|Bad, who?|
+Line 4. REG|16|A very bad joke.|             │                     Line 5. ERROR: M5FT, missing pipe.
+                                             |                     REG|22|you were unfriended...
+                                             │
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 6.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|5|Tank.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|||10|Tank, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|15|You're welcome.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|5|Ughh!|", SERVER READS
+GOAL: 
+/* This testcase checks how the program handles too many '|' in a message and gracefully responds with 
+	an error message */ 
+
+OUTPUT:
+Client-side                                SPLIT                      Server-side
+Line 0. REG|13|Knock, knock.|                │                        Line 1. REG|12|Who's there?|
+Line 2. REG|5|Tank.|                         │                        Line 3. REG|||10|Tank, who?|
+	ERR|M3FT| 
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 7.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Bad.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|9|Bad, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|16|A very bad joke.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|22|you were unfriended...foreever", SERVER READS
+   L5.CLIENT WRITES: "and ever|", SERVER READS
+GOAL:
+/*This test case, tests if program would stop and send ERR M5LN when word length of a split message exceeds expected word length.*/
+
+OUTPUT:
+Client-side                              SPLIT                Server-side
+Line 0. REG|13|Knock, knock.|              │                  Line 1. REG|12|Who's there?|
+Line 2. REG|4|Bad.|                        │                  Line 3. REG|9|Bad, who?|
+Line 4. REG|16|A very bad joke.|           │                  Line 5. REG|22|you were unfriended...foreever
+ERR|M5LN|                                  │
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 8.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|", SERVER READS
+   L1.CLIENT WRITES: "Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Bad.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|9|Bad, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|16|A very bad joke.|", CLIENT READS
+   L5.CLIENT WRITES: "RE", SERVER READS
+   L5.CLIENT WRITES: "G|22|you were unfriended...foreever", SERVER READS
+   L5.CLIENT WRITES: "and ever", SERVER READS
+GOAL:
+/*This test case, tests if program would stop and send ERR M5LN when word length of a twice split message, with a split REG in the beginning, exceeds expected word length before detecting missing '|'.*/
+
+OUTPUT:
+Client-side                              SPLIT                Server-side
+Line 0. REG|13|Knock, knock.|              │                  Line 1. REG|12|Who's there?|
+Line 2. REG|4|Bad.|                        │                  Line 3. REG|9|Bad, who?|
+Line 4. REG|16|A very bad joke.|           │                  Line 5. REG|22|you were unfriended...foreeverand ever
+ERR|M5LN|                                  │
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 9.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Who.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|A|Who, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|7|An owl.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|6|Ha ha.", SERVER READS
+GOAL:
+/*This test case, tests if the program would stop and send ERR when the column for word length has a character that is not a digit and return gracefully.*/
+
+OUTPUT:
+Client-side                              SPLIT                Server-side
+Line 0. REG|13|Knock, knock.|              │                  Line 1. REG|12|Who's there?|
+Line 2. REG|4|Who.|                        │                  Line 3. REG|A|Who, who?|
+ERR|M3FT|                                  │
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 10.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "ERR|M1LN|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Who.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|A|Who, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|7|An owl.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|6|Ha ha.", SERVER READS
+GOAL:
+/*This test case tests if the program would stop reading messages because of receiving a ERR message from client and return gracefully*/
+
+OUTPUT:
+Client-side                              SPLIT                Server-side
+Line 0. REG|13|Knock, knock.|              │                  ERR|M1CT|
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 11.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "ERR|M7LN|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Who.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|A|Who, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|7|An owl.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|6|Ha ha.", SERVER READS
+GOAL:
+/*This test case tests if the program would identify the error line in the ERR message from the client. No ERR message would be sent by the server, instead it would send a warning to the client and return gracefully.*/
+
+OUTPUT:
+Client-side                              SPLIT                Server-side
+Line 0. REG|13|Knock, knock.|              │                  ERR|M7CT|
+Warning: ERR received is incorrectly formatted. 
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 11.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "ERR|M1CTA|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Who.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|A|Who, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|7|An owl.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|6|Ha ha.", SERVER READS
+GOAL:
+/*This test case tests if the program would identify the length error in the ERR message from the client. No ERR message would be sent by the server, instead it would send a warning to the client and return gracefully.*/
+
+OUTPUT:
+Client-side                              SPLIT                Server-side
+Line 0. REG|13|Knock, knock.|              │                  ERR|M1CTA|
+Warning: ERR received is incorrectly formatted. 
+
+-------------------------------------------------------------------------------------------------------------
+TESTCASE 12.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "ERR|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Who.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|A|Who, who?|", SERVER READS
+   L4.SERVER WRITES: "REG|7|An owl.|", CLIENT READS
+   L5.CLIENT WRITES: "REG|6|Ha ha.", SERVER READS
+GOAL:
+/*This test case tests if the program would identify the missing pipe in the ERR message from the client. No ERR message would be sent by the server, instead it would send a warning to the client and return gracefully.*/
+
+OUTPUT:
+Client-side                              SPLIT                Server-side
+Line 0. REG|13|Knock, knock.|              │                  Line 1. ERROR: M1FT, missing pipe.
+                                                              ERR|
+-------------------------------------------------------------------------------------------------------------
+
+TESTCASE 13.
+TESTCASE 8.
+PLANNED INTERACTION:
+   L0.SERVER WRITES: "REG|13|Knock, knock.|", CLIENT READS
+   L1.CLIENT WRITES: "REG|12|Who's there?|", SERVER READS
+   L2.SERVER WRITES: "REG|4|Bad.|", CLIENT READS
+   L3.CLIENT WRITES: "REG|9|Bad, ", SERVER READS
+   L3.CLIENT WRITES: "who?|", SERVER READS
+   L4.SERVER WRITES: "REG|16|A very bad joke.|", CLIENT READS
+   L5.CLIENT WRITES: "RE", SERVER READS
+   L5.CLIENT WRITES: "G|22|you were unfriended..s", SERVER READS
+GOAL:
+/*This test case, tests if program would not stop at split line 3 and send ERR M5CT for line 5 due to punctuation error and return gracefully.*/
+
+OUTPUT:
+Client-side                              SPLIT                Server-side
+Line 0. REG|13|Knock, knock.|              │                  Line 1. REG|12|Who's there?|
+Line 2. REG|4|Bad.|                        │                  Line 3. REG|9|Bad, who?|
+Line 4. REG|16|A very bad joke.|           │                  Line 5. REG|22|you were unfriended..s
+ERR|M5CT|                                  │
+
+
+ADDITION PROJECT DESCRIPTION:
+For the assignment 3: Who's there? We designed our code to create a server, allowing a client to connect to the server and begin the knock knock joke (KKJ for short). In the terminal command, this program will be compiled by Makefile. Then by entering ./KKJserver 9002 (any port number between 5000~65536 would do) into the command, the server would be opened, allowing a client to connect to the server.
+Our code makes the server to remain opened even after the client closes. Thus allowing different clients to connect to the server one after the other. Our server would read client messages, and be able to compile split messages into one message, and wait for the client to send a final split message containing the last '|'. If the last pipe was never received, our code would still be opened until the client closes itself by crtl+C. Under such situation, our code would reply with a Warning and a FT error. Of course, if the split message word length already exceeded the expected word length (the digits in the client message), then out code would send a LN error even though the last pipe was not sent by the client.
+Finally, our code does not use strtok and make tokens. Because, when we planned the program, we thought of situations in which the message where split into incomplete chunks of the three sections in the message. For example, REG split into "RE" and "G", word length split into "1" and "2" and our content section would be split into more than two parts. Under such condition, strtok  would make the read unnecssarily complicated. Thus we designed the code to read the client message one character after the other, allowing us to check is the characters correctly allow the rule set by the assignment.
+This is our final project and we would like to thank the professors and TAs for this challenging and fruitful semester!
+Thank you!
