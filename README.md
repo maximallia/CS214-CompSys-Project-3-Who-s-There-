@@ -1,4 +1,4 @@
-# CS214-CompSys-Project-3-Who-s-There-
+# CS214-CompSys-Project-3-Whos-There
 
 In this assignment you will make use of C sockets to implement a simple network service: a knock knock joke server.
 
