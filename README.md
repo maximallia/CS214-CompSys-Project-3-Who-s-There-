@@ -6,3 +6,5 @@ Knock knock jokes are extremely formulaic and often rely on simple puns and mala
 
 Your task will be to write a knock knock joke server using the protocols established below. There is an application protocol and a message format. The application protocol specifies what messages of what type are allowed when. The message format specifies how the application messages should be constructed and read/written from/to your sockets.
 Your server should be able to handle a single humor-devoid client at a time.
+
+MORE INFO: Asst3.pdf
